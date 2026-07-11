@@ -58,8 +58,13 @@ const staggerVariants = {
   },
 };
 
-export function SessionNavBar() {
-  const [isCollapsed, setIsCollapsed] = useState(true);
+export function SessionNavBar({
+  isCollapsed,
+  setIsCollapsed,
+}: {
+  isCollapsed: boolean;
+  setIsCollapsed: (value: boolean) => void;
+}) {
   const [accountOpen, setAccountOpen] = useState(false);
   const pathname = usePathname();
 
@@ -74,17 +79,21 @@ export function SessionNavBar() {
   return (
     <motion.div
       className={cn(
-        "sidebar left-0 z-40 h-screen shrink-0 border-r sm:block",
-        isCollapsed && "hidden",
+        "sidebar fixed left-0 z-40 h-screen shrink-0 border-r transition-transform sm:relative sm:block",
+        isCollapsed ? "-translate-x-full sm:translate-x-0" : "translate-x-0",
       )}
       initial={isCollapsed ? "closed" : "open"}
       animate={isCollapsed ? "closed" : "open"}
       variants={sidebarVariants}
       transition={transitionProps}
-      onMouseEnter={() => setIsCollapsed(false)}
+      onMouseEnter={() => {
+        if (window.innerWidth >= 640) setIsCollapsed(false);
+      }}
       onMouseLeave={() => {
-        setIsCollapsed(true);
-        setAccountOpen(false);
+        if (window.innerWidth >= 640) {
+          setIsCollapsed(true);
+          setAccountOpen(false);
+        }
       }}>
       <motion.div
         className="text-muted-foreground relative z-40 flex h-full shrink-0 flex-col bg-white transition-all dark:bg-black"
@@ -172,25 +181,22 @@ export function SessionNavBar() {
 
                 <div>
                   <DropdownMenu
-                    modal={false}
                     open={accountOpen}
                     onOpenChange={setAccountOpen}>
-                    <DropdownMenuTrigger className="w-full">
-                      <div className="hover:bg-muted hover:text-primary flex h-8 w-full flex-row items-center gap-2 rounded-md px-2 py-1.5 transition">
-                        <Avatar className="size-4">
-                          <AvatarFallback>A</AvatarFallback>
-                        </Avatar>
-                        <motion.li
-                          variants={variants}
-                          className="flex w-full items-center gap-2">
-                          {!isCollapsed && (
-                            <>
-                              <p className="text-sm font-medium">Account</p>
-                              <ChevronsUpDown className="text-muted-foreground/50 ml-auto h-4 w-4" />
-                            </>
-                          )}
-                        </motion.li>
-                      </div>
+                    <DropdownMenuTrigger className="hover:bg-muted hover:text-primary flex h-8 w-full flex-row items-center gap-2 rounded-md px-2 py-1.5 transition">
+                      <Avatar className="size-4">
+                        <AvatarFallback>A</AvatarFallback>
+                      </Avatar>
+                      <motion.span
+                        variants={variants}
+                        className="flex w-full items-center gap-2">
+                        {!isCollapsed && (
+                          <>
+                            <p className="text-sm font-medium">Account</p>
+                            <ChevronsUpDown className="text-muted-foreground/50 ml-auto h-4 w-4" />
+                          </>
+                        )}
+                      </motion.span>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent sideOffset={5}>
                       <div className="flex flex-row items-center gap-2 p-2">
