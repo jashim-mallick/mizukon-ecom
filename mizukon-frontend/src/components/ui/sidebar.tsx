@@ -66,7 +66,15 @@ export function SessionNavBar({
   setIsCollapsed: (value: boolean) => void;
 }) {
   const [accountOpen, setAccountOpen] = useState(false);
+  const [prevCollapsed, setPrevCollapsed] = useState(isCollapsed);
   const pathname = usePathname();
+
+  // React-recommended way to sync state without useEffect
+  // If the sidebar collapse state changed, close the menu immediately.
+  if (isCollapsed !== prevCollapsed) {
+    setPrevCollapsed(isCollapsed);
+    setAccountOpen(false);
+  }
 
   const navItemClass = (active: boolean) =>
     cn(
@@ -92,7 +100,6 @@ export function SessionNavBar({
       onMouseLeave={() => {
         if (window.innerWidth >= 640) {
           setIsCollapsed(true);
-          setAccountOpen(false);
         }
       }}>
       <motion.div
@@ -182,7 +189,8 @@ export function SessionNavBar({
                 <div>
                   <DropdownMenu
                     open={accountOpen}
-                    onOpenChange={setAccountOpen}>
+                    onOpenChange={setAccountOpen}
+                    modal={false}>
                     <DropdownMenuTrigger className="hover:bg-muted hover:text-primary flex h-8 w-full flex-row items-center gap-2 rounded-md px-2 py-1.5 transition">
                       <Avatar className="size-4">
                         <AvatarFallback>A</AvatarFallback>
