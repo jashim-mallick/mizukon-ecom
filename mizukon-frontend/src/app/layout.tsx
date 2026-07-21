@@ -1,6 +1,5 @@
-import Header from "@/components/Header/Header";
+import { AppShell } from "@/components/Layout/AppShell";
 import ThemeProvider from "@/components/Providers/ThemeProvider";
-import { SessionNavBar } from "@/components/ui/sidebar";
 import { geistMono, geistSans } from "@/lib/fonts";
 import { ReactNode } from "react";
 import "./globals.css";
@@ -20,15 +19,7 @@ const RootLayout = ({ children }: Readonly<RootLayoutProps>) => {
           attribute={"class"}
           defaultTheme="dark"
           enableSystem={false}>
-          <div className="flex h-screen">
-            <SessionNavBar />
-            <div className="flex flex-1 flex-col overflow-auto">
-              <Header />
-              <main className="mx-auto max-w-7xl flex-1 px-6 py-3">
-                {children}
-              </main>
-            </div>
-          </div>
+          <AppShell>{children}</AppShell>
         </ThemeProvider>
       </body>
     </html>
