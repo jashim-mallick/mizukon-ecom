@@ -11,14 +11,17 @@
 		"migrate": "prisma migrate dev && prisma generate"
 	},
 	"dependencies": {
+		"@better-auth/prisma-adapter": "1.6.26",
 		"@fastify/autoload": "^6.3.1",
+		"@fastify/cors": "^11.3.0",
 		"@fastify/one-line-logger": "^2.1.0",
 		"@fastify/sensible": "^6.0.4",
 		"@fastify/type-provider-typebox": "^6.1.0",
 		"@prisma/adapter-libsql": "^7.8.0",
 		"@prisma/client": "^7.8.0",
+		"better-auth": "1.6.26",
 		"dotenv": "^17.4.2",
-		"fastify": "^5.8.5",
+		"fastify": "^5.10.0",
 		"fastify-plugin": "^6.0.0"
 	},
 	"devDependencies": {
