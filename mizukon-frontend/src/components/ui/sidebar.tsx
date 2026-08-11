@@ -69,8 +69,6 @@ export function SessionNavBar({
   const [prevCollapsed, setPrevCollapsed] = useState(isCollapsed);
   const pathname = usePathname();
 
-  // React-recommended way to sync state without useEffect
-  // If the sidebar collapse state changed, close the menu immediately.
   if (isCollapsed !== prevCollapsed) {
     setPrevCollapsed(isCollapsed);
     setAccountOpen(false);
@@ -80,14 +78,14 @@ export function SessionNavBar({
     cn(
       "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition",
       active ?
-        "bg-muted text-blue-600"
+        "bg-muted text-primary"
       : "text-muted-foreground hover:bg-muted hover:text-primary",
     );
 
   return (
     <motion.div
       className={cn(
-        "sidebar fixed left-0 z-40 h-screen shrink-0 border-r transition-transform sm:relative sm:block",
+        "sidebar fixed left-0 z-40 h-screen shrink-0 border-r shadow transition-transform sm:relative sm:block",
         isCollapsed ? "-translate-x-full sm:translate-x-0" : "translate-x-0",
       )}
       initial={isCollapsed ? "closed" : "open"}
@@ -103,16 +101,17 @@ export function SessionNavBar({
         }
       }}>
       <motion.div
-        className="text-muted-foreground relative z-40 flex h-full shrink-0 flex-col bg-white transition-all dark:bg-black"
+        className="text-muted-foreground bg-background relative z-40 flex h-full shrink-0 flex-col transition-all"
         variants={contentVariants}>
         <motion.ul
           variants={staggerVariants}
           className="flex h-full flex-col">
           <div className="flex grow flex-col items-center">
-            <div className="flex h-14.25 w-full shrink-0 items-center border-b p-2">
-              <div className="flex w-full items-center justify-center gap-2 px-2">
-                <Avatar className="size-6 rounded bg-blue-600">
-                  <AvatarFallback className="bg-blue-600 text-xs text-white">
+            {/* Top bar: now h-14 with py-3 and gap-4 to match header rhythm */}
+            <div className="flex h-14 w-full shrink-0 items-center border-b px-2 py-3">
+              <div className="flex w-full items-center justify-center gap-4">
+                <Avatar className="bg-primary size-6 rounded">
+                  <AvatarFallback className="bg-primary text-primary-foreground text-xs">
                     M
                   </AvatarFallback>
                 </Avatar>
